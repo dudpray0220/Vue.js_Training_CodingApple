@@ -10,7 +10,7 @@
     <img src="./assets/logo.png" class="logo" />
   </div>
 
-  <Container :postDatas="postDatas" :step="step" :imageUrl="imageUrl" @newPost="newPost = $event" />
+  <Container :postDatas="postDatas" :step="step" :imageUrl="imageUrl" @newPost="newPost = $event" :filter="filter" />
   <button @click="more">더보기</button>
 
   <div class="footer">
@@ -44,7 +44,14 @@ export default {
       imageUrl: '',
       myPost: {},
       newPost: '',
+      filter: '',
     };
+  },
+  mounted() {
+    this.emitter.on('event', (filter) => {
+      console.log(filter);
+      this.filter = filter;
+    });
   },
   components: {
     Container: Container,

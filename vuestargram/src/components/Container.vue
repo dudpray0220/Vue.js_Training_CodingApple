@@ -4,24 +4,22 @@
             <!-- <Post :postData="postData" />
         <Post :postData="postData" />
         <Post :postData="postData" /> -->
-            <Post v-for="(postData, i) in postDatas" :key="i" :postData="postData" />
+            <Post v-for="(postData, i) in postDatas" :key="i" :postData="postData" :filter="filter" />
         </div>
 
         <!-- 필터선택페이지 -->
         <div v-if="step === 1">
-            <div class="upload-image" :style="{ backgroundImage: `url(${imageUrl})` }"></div>
+            <div :class="filter" class="upload-image" :style="{ backgroundImage: `url(${imageUrl})` }"></div>
             <div class="filters">
-                <div class="filter-1"></div>
-                <div class="filter-1"></div>
-                <div class="filter-1"></div>
-                <div class="filter-1"></div>
-                <div class="filter-1"></div>
+                <filter-box :filter="filter" :imageUrl="imageUrl" v-for="(filter, i) in filterList" :key="i">
+                    <span>{{ filter }}</span>
+                </filter-box>
             </div>
         </div>
 
         <!-- 글작성페이지 -->
         <div v-if="step === 2">
-            <div class="upload-image" :style="{ backgroundImage: `url(${imageUrl})` }"></div>
+            <div :class="filter" class="upload-image" :style="{ backgroundImage: `url(${imageUrl})` }"></div>
             <div class="write">
                 <textarea class="write-box" @input="$emit('newPost', $event.target.value)">write!</textarea>
             </div>
@@ -31,16 +29,25 @@
 
 <script>
 import Post from './Post.vue';
+import FilterBox from './FilterBox.vue';
+import filterList from '../assets/filterList'
 
 export default {
     name: 'Container',
+    data() {
+        return {
+            filterList: filterList
+        }
+    },
     components: {
-        Post: Post,
+        Post,
+        FilterBox,
     },
     props: {
         postDatas: Array,
         step: Number,
         imageUrl: String,
+        filter: String,
     },
 };
 </script>

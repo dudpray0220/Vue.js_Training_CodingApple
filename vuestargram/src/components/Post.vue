@@ -6,7 +6,7 @@
             <span class="profile-name">{{ postData.name }}</span>
         </div>
         <!-- <div class="post-body" v-bind:style="{ 'background-image': `url(${postData.postImage})` }"></div> -->
-        <div class="post-body" v-bind:style="{ backgroundImage: `url(${postData.postImage})` }"></div>
+        <div :class="filter" class="post-body" v-bind:style="{ backgroundImage: `url(${postData.postImage})` }"></div>
         <div class="post-content">
             <p>{{ postData.likes }} Likes</p>
             <p><strong>{{ postData.name }}</strong> {{ postData.content }}</p>
@@ -19,8 +19,9 @@
 export default {
     name: 'Post',
     props: {
-        postData: Object
-    }
+        postData: Object,
+        filter: String,
+    },
 }
 </script>
 
