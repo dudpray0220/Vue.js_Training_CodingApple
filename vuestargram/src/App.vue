@@ -10,8 +10,17 @@
     <img src="./assets/logo.png" class="logo" />
   </div>
 
-  <Container :postDatas="postDatas" :step="step" :imageUrl="imageUrl" @newPost="newPost = $event" :filter="filter" />
+  <Container :postDatas="postDatas" :step="step" :imageUrl="imageUrl" @newPost="newPost = $event" />
   <button @click="more">더보기</button>
+
+  <h4>{{ name }}</h4>
+  <!-- <h4>{{ $store.state.age }}</h4> -->
+  <h4>{{ age }}</h4>
+  <!-- <button @click="$store.commit('plusAge', 10)">나이 추가</button> -->
+  <button @click="plusAge(5)">나이 추가</button>
+  <button @click="$store.commit('changeName')">이름 변경</button>
+  <p>{{ $store.state.more }}</p>
+  <button @click="$store.dispatch('getData')">더보기 버튼</button>
 
   <div class="footer">
     <ul class="footer-button-plus">
@@ -32,6 +41,7 @@
 import Container from './components/Container.vue';
 import postDatas from './assets/data';
 import axios from 'axios';
+import { mapMutations, mapState } from 'vuex';
 
 export default {
   name: 'Vuestargram',
@@ -44,19 +54,31 @@ export default {
       imageUrl: '',
       myPost: {},
       newPost: '',
-      filter: '',
+      myFilter: '',
+      counter: 0,
     };
   },
   mounted() {
-    this.emitter.on('event', (filter) => {
-      console.log(filter);
-      this.filter = filter;
+    this.emitter.on('event', (a) => {
+      console.log(this.a);
+      this.myFilter = a;
     });
   },
   components: {
     Container: Container,
   },
+  computed: {
+    name() {
+      return this.$store.state.name
+    },
+    ...mapState(['name', 'age'])
+  },
   methods: {
+    ...mapMutations(['changeName', 'plusAge']),
+
+    now() {
+      return new Date();
+    },
     more() {
       // axios
       //   .post()
@@ -93,7 +115,7 @@ export default {
         date: 'May 7',
         liked: false,
         content: this.newPost,
-        filter: 'perpetua',
+        filter: this.myFilter,
       };
       console.log(myPost);
       postDatas.unshift(myPost);

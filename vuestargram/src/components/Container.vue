@@ -4,22 +4,22 @@
             <!-- <Post :postData="postData" />
         <Post :postData="postData" />
         <Post :postData="postData" /> -->
-            <Post v-for="(postData, i) in postDatas" :key="i" :postData="postData" :filter="filter" />
+            <Post v-for="(postData, i) in postDatas" :key="i" :index="i" :postData="postData" />
         </div>
 
         <!-- 필터선택페이지 -->
         <div v-if="step === 1">
-            <div :class="filter" class="upload-image" :style="{ backgroundImage: `url(${imageUrl})` }"></div>
+            <div :class="myFilter" class="upload-image" :style="{ backgroundImage: `url(${imageUrl})` }"></div>
             <div class="filters">
                 <filter-box :filter="filter" :imageUrl="imageUrl" v-for="(filter, i) in filterList" :key="i">
-                    <span>{{ filter }}</span>
+                    <!-- <span>{{ filter }}</span> -->
                 </filter-box>
             </div>
         </div>
 
         <!-- 글작성페이지 -->
         <div v-if="step === 2">
-            <div :class="filter" class="upload-image" :style="{ backgroundImage: `url(${imageUrl})` }"></div>
+            <div :class="myFilter" class="upload-image" :style="{ backgroundImage: `url(${imageUrl})` }"></div>
             <div class="write">
                 <textarea class="write-box" @input="$emit('newPost', $event.target.value)">write!</textarea>
             </div>
@@ -36,8 +36,14 @@ export default {
     name: 'Container',
     data() {
         return {
-            filterList: filterList
+            filterList: filterList,
+            myFilter: '',
         }
+    },
+    mounted() {
+        this.emitter.on('event', (a) => {
+            this.myFilter = a;
+        })
     },
     components: {
         Post,
@@ -47,7 +53,6 @@ export default {
         postDatas: Array,
         step: Number,
         imageUrl: String,
-        filter: String,
     },
 };
 </script>
